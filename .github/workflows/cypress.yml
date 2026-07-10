@@ -1,21 +1,29 @@
-name: Tests E2E Cypress
+name: Mon Pipeline CI/CD complet
 
-# Quand le pipeline se lance ?
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 
 jobs:
-    cypress-run:
-        # Quelle machine virtuelle utiliser ?
-        runs-on: ubuntu-latest
+  # ---------------------------------------------
+  # ÉTAPE 1 : LA CI (Les tests)
+  # ---------------------------------------------
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lancer Cypress
+        uses: cypress-io/github-action@v6
 
-        steps:
-            # Récup le code depuis github
-            - name: Checkout du code
-              uses: actions/checkout@v4
-
-            # Installer les dépendances et lancer Cypress
-            - name: Lancer Cypress en mode headless
-              uses: cypress-io/github-action@v6
+  # ---------------------------------------------
+  # ÉTAPE 2 : LA CD (Le déploiement)
+  # ---------------------------------------------
+  deploy-to-production:
+    needs: cypress-run  # ⬅️ LE SECRET EST LÀ : Attend que la CI soit terminée et verte !
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Déployer sur le serveur
+        # Ici on mettrait la commande pour envoyer les fichiers sur le serveur (ex: AWS, Vercel, FTP...)
+        run: echo "Le code part en production car les tests sont passés !"
