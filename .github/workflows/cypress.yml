@@ -1,0 +1,21 @@
+name: Tests E2E Cypress
+
+# Quand le pipeline se lance ?
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    cypress-run:
+        # Quelle machine virtuelle utiliser ?
+        runs-on: ubuntu-latest
+
+        steps:
+            # Récup le code depuis github
+            - name: Checkout du code
+              uses: actions/checkout@v4
+
+            # Installer les dépendances et lancer Cypress
+            - name: Lancer Cypress en mode headless
+              uses: cypress-io/github-action@v6
