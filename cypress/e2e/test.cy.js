@@ -16,4 +16,11 @@ describe('Ma session d\'entraînement QA', () => {
     cy.get('.title').should('be.visible').and('contain', 'Products')
   })
 
+  it('Test volontairement faux pour vérifier le blocage de la CI', () => {
+    cy.visit('https://www.saucedemo.com/')
+    
+    // On s'attend exprès à ce que le bouton de login affiche "Bonjour" au lieu de "Login"
+    cy.get('[data-test="login-button"]').should('have.value', 'Bonjour')
+  })
+
 })
